@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 200" fill="none">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6C5CE7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#A29BFE;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#6C5CE7;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#A29BFE;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6C5CE7;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Icon: document with trace lines -->
+  <g transform="translate(30, 20)">
+    <!-- Document body -->
+    <rect x="10" y="10" width="100" height="140" rx="8" fill="url(#grad1)" opacity="0.15" stroke="url(#grad1)" stroke-width="2.5"/>
+    <!-- Document fold -->
+    <path d="M 80 10 L 110 40" stroke="url(#grad1)" stroke-width="2" opacity="0.4"/>
+    <path d="M 80 10 L 80 40 L 110 40" fill="url(#grad1)" opacity="0.1" stroke="url(#grad1)" stroke-width="1.5"/>
+
+    <!-- Trace lines (representing execution paths) -->
+    <circle cx="32" cy="55" r="4" fill="#6C5CE7"/>
+    <line x1="40" y1="55" x2="90" y2="55" stroke="#6C5CE7" stroke-width="2" stroke-dasharray="4,3"/>
+
+    <circle cx="32" cy="75" r="4" fill="#A29BFE"/>
+    <line x1="40" y1="75" x2="80" y2="75" stroke="#A29BFE" stroke-width="2" stroke-dasharray="4,3"/>
+
+    <circle cx="32" cy="95" r="4" fill="#6C5CE7"/>
+    <line x1="40" y1="95" x2="70" y2="95" stroke="#6C5CE7" stroke-width="2" stroke-dasharray="4,3"/>
+
+    <!-- Connecting arrows (cross-service links) -->
+    <path d="M 90 55 Q 100 65 80 75" stroke="#6C5CE7" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>
+    <path d="M 80 75 Q 88 85 70 95" stroke="#A29BFE" stroke-width="1.5" fill="none"/>
+
+    <!-- Branch out indicator -->
+    <circle cx="90" cy="55" r="3" fill="#6C5CE7" opacity="0.6"/>
+    <circle cx="80" cy="75" r="3" fill="#A29BFE" opacity="0.6"/>
+    <circle cx="70" cy="95" r="3" fill="#6C5CE7" opacity="0.6"/>
+
+    <!-- Bottom detail lines -->
+    <line x1="28" y1="120" x2="92" y2="120" stroke="#6C5CE7" stroke-width="1.5" opacity="0.3"/>
+    <line x1="28" y1="130" x2="75" y2="130" stroke="#A29BFE" stroke-width="1.5" opacity="0.3"/>
+  </g>
+
+  <!-- Text -->
+  <text x="160" y="95" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-weight="700" font-size="42" fill="#2D3436" letter-spacing="-1">
+    feature-documenter
+  </text>
+  <text x="162" y="125" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-weight="400" font-size="16" fill="#636E72" letter-spacing="0.5">
+    Trace microservices. Generate documentation.
+  </text>
+
+  <!-- Accent line under tagline -->
+  <rect x="162" y="135" width="120" height="2.5" rx="1" fill="url(#grad2)" opacity="0.6"/>
+</svg>

@@ -1,0 +1,56 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "discover-groups-by-controller",
+    "prompt": "Discover features in a Spring Boot repo that has OrderController (GET /api/orders, POST /api/orders, GET /api/orders/{id}, PUT /api/orders/{id}, DELETE /api/orders/{id}, POST /api/orders/{id}/cancel), UserController (POST /api/users, GET /api/users/{id}, PUT /api/users/{id}), and HealthController (GET /health, GET /ready).",
+    "assertions": [
+      {"id": "groups-order-endpoints", "text": "All Order endpoints are grouped into a single feature (not split into separate features per endpoint)", "type": "quality"},
+      {"id": "groups-user-endpoints", "text": "All User endpoints are grouped into a single feature", "type": "quality"},
+      {"id": "excludes-health", "text": "Health/readiness endpoints are excluded from features or flagged as infrastructure, not documented as a business feature", "type": "quality"},
+      {"id": "reasonable-names", "text": "Feature names are human-readable (e.g., 'Order Management', not 'order-controller-endpoints')", "type": "quality"}
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "discover-state-file-structure",
+    "prompt": "Discover features and create state files for a repo with a single feature: POST /api/payments/charge and POST /api/payments/refund in PaymentController.",
+    "assertions": [
+      {"id": "has-frontmatter", "text": "State file has YAML frontmatter with feature, slug, source_repo, discovered date, and phase=discovered", "type": "format"},
+      {"id": "has-entry-points", "text": "State file has an Entry Points section with a table listing both endpoints", "type": "format"},
+      {"id": "has-all-sections", "text": "State file contains all 9 required sections (Entry Points through Next Steps) even if most are placeholder", "type": "format"},
+      {"id": "has-trace-log", "text": "Trace Log section has an initial discovery entry with timestamp", "type": "format"},
+      {"id": "slug-is-kebab", "text": "The slug in frontmatter is kebab-case (e.g., 'payment-processing', not 'PaymentProcessing')", "type": "format"}
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "discover-updates-index",
+    "prompt": "Discover features in two repos: order-service (3 features) and user-service (2 features). An index.md already exists with one previously discovered feature 'notification-dispatch'.",
+    "assertions": [
+      {"id": "preserves-existing", "text": "The previously existing 'notification-dispatch' feature is still present in the updated index", "type": "quality"},
+      {"id": "adds-new-features", "text": "All newly discovered features are added to the index", "type": "quality"},
+      {"id": "correct-count", "text": "The feature_count in index frontmatter reflects the total (existing + new)", "type": "format"},
+      {"id": "shows-phase", "text": "Each feature row in the index table includes its current phase", "type": "format"}
+    ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "discover-no-settings-abort",
+    "prompt": "Discover features but .feature-docs/_settings.md does not exist.",
+    "assertions": [
+      {"id": "detects-missing-settings", "text": "Skill detects that _settings.md is missing", "type": "quality"},
+      {"id": "directs-to-init", "text": "Skill tells user to run /feature-documenter:init", "type": "quality"},
+      {"id": "does-not-scan", "text": "Skill does not proceed to scan repositories", "type": "quality"}
+    ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "discover-search-mode",
+    "prompt": "Discover features with --search 'payment' across repos. order-service has PaymentController and OrderController. payment-service has ChargeController and RefundController.",
+    "assertions": [
+      {"id": "finds-payment-matches", "text": "Results include payment-related endpoints from both repos", "type": "quality"},
+      {"id": "excludes-unrelated", "text": "Results do not include OrderController endpoints that have no payment relation", "type": "quality"},
+      {"id": "searches-across-repos", "text": "Search spans multiple repositories, not just one", "type": "quality"}
+    ]
+  }
+]

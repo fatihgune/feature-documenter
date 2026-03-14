@@ -1,0 +1,54 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "resolve-matches-repo-names",
+    "prompt": "Resolve dependencies for 'order-cancellation'. Outbound calls: payment-service POST /api/refunds, notification-service POST /api/notifications/send. Repo registry contains: payment-service (Spring Boot), user-service (NestJS). notification-service is NOT in the registry.",
+    "assertions": [
+      {"id": "matches-payment", "text": "payment-service outbound call is matched to the payment-service repo in the registry", "type": "quality"},
+      {"id": "marks-notif-unresolved", "text": "notification-service is marked as unresolved with reason 'not in repository registry'", "type": "quality"},
+      {"id": "updates-outbound-status", "text": "Outbound Calls table status is updated: payment-service to 'resolved', notification-service to 'not-in-registry'", "type": "format"},
+      {"id": "creates-resolved-section", "text": "Resolved Dependencies section has an H3 for payment-service with trace data", "type": "format"}
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "resolve-partial-name-matching",
+    "prompt": "Resolve dependencies. Outbound call target is 'payment' (inferred from URL http://payment/api/charges). Repo registry has 'payment-service'. No exact match exists.",
+    "assertions": [
+      {"id": "partial-match", "text": "The outbound call to 'payment' is matched to 'payment-service' via partial name matching", "type": "quality"},
+      {"id": "not-marked-unresolved", "text": "The dependency is not incorrectly marked as unresolved due to name mismatch", "type": "quality"}
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "resolve-respects-max-depth",
+    "prompt": "Resolve dependencies for 'checkout'. Settings: max_depth=2. Depth 1: payment-service has outbound call to fraud-service. Depth 2: fraud-service has outbound call to risk-engine-service. All repos in registry.",
+    "assertions": [
+      {"id": "resolves-depth-1", "text": "payment-service dependency is resolved at depth 1", "type": "quality"},
+      {"id": "resolves-depth-2", "text": "fraud-service transitive dependency is resolved at depth 2", "type": "quality"},
+      {"id": "stops-at-max", "text": "risk-engine-service (depth 3) is listed as unresolved with reason 'max depth reached'", "type": "quality"},
+      {"id": "depth-in-frontmatter", "text": "dependency_depth in frontmatter is set to 2", "type": "format"}
+    ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "resolve-counts-sync",
+    "prompt": "Resolve dependencies for a feature with 5 outbound calls. 3 are resolved, 1 is not in registry, 1 is max depth exceeded.",
+    "assertions": [
+      {"id": "resolved-count", "text": "outbound_calls_resolved in frontmatter is 3", "type": "format"},
+      {"id": "unresolved-count", "text": "outbound_calls_unresolved in frontmatter is 2", "type": "format"},
+      {"id": "phase-correct", "text": "phase in frontmatter is 'resolved' (all resolvable deps handled even though some are unresolvable)", "type": "format"},
+      {"id": "unresolved-section-lists-reasons", "text": "Unresolved Dependencies section lists each unresolved dep with its specific reason", "type": "quality"}
+    ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "resolve-fresh-session-message",
+    "prompt": "Resolve dependencies for 'order-cancellation'. All outbound calls resolved successfully.",
+    "assertions": [
+      {"id": "recommends-fresh-session", "text": "Output recommends starting a fresh Claude session before running generate", "type": "quality"},
+      {"id": "mentions-generate-command", "text": "Output includes the specific command: /feature-documenter:generate order-cancellation", "type": "quality"},
+      {"id": "explains-why-fresh", "text": "Output mentions clean context window or output quality as the reason for a fresh session", "type": "quality"}
+    ]
+  }
+]

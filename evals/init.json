@@ -1,0 +1,36 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "init-creates-all-files",
+    "prompt": "Initialize feature-documenter. Choose markdown format, professional tone, defaults for depth. Two sibling repos exist: order-service (has pom.xml) and user-service (has package.json with @nestjs/core).",
+    "assertions": [
+      {"id": "creates-settings", "text": "Creates .feature-docs/_settings.md with format=markdown and tone=professional in frontmatter", "type": "format"},
+      {"id": "creates-repos", "text": "Creates .feature-docs/_repos.md with both repos listed and correct tech stacks", "type": "format"},
+      {"id": "creates-index", "text": "Creates .feature-docs/index.md with feature_count=0", "type": "format"},
+      {"id": "creates-state-dir", "text": "Creates .feature-docs/_state/ directory", "type": "format"},
+      {"id": "creates-features-dir", "text": "Creates .feature-docs/features/ directory", "type": "format"}
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "init-detects-tech-stacks",
+    "prompt": "Initialize feature-documenter. Sibling directories: api-gateway (has package.json with express), auth-service (has go.mod), billing-service (has pom.xml with spring-boot-starter-web), web-app (has package.json with react but no express/nestjs).",
+    "assertions": [
+      {"id": "detects-express", "text": "api-gateway is identified as Express (Node.js)", "type": "quality"},
+      {"id": "detects-go", "text": "auth-service is identified as Go", "type": "quality"},
+      {"id": "detects-spring", "text": "billing-service is identified as Spring Boot (Java)", "type": "quality"},
+      {"id": "excludes-frontend", "text": "web-app is either excluded or flagged as a frontend app (not a backend service)", "type": "quality"}
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "init-existing-config-check",
+    "prompt": "Initialize feature-documenter. .feature-docs/_settings.md already exists with format=notion, tone=conversational.",
+    "assertions": [
+      {"id": "detects-existing", "text": "Skill detects the existing configuration and tells the user", "type": "quality"},
+      {"id": "shows-current-settings", "text": "Skill shows the current settings (notion format, conversational tone)", "type": "quality"},
+      {"id": "asks-reconfigure", "text": "Skill asks whether to reconfigure or keep existing settings", "type": "quality"},
+      {"id": "does-not-overwrite-silently", "text": "Skill does not overwrite the existing config without asking", "type": "quality"}
+    ]
+  }
+]

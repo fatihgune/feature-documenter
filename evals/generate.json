@@ -1,0 +1,176 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "generate-no-code-snippets",
+    "prompt": "Generate documentation for the 'order-cancellation' feature. The state file at .feature-docs/_state/order-cancellation.md contains a fully traced and resolved feature with entry point POST /api/orders/{id}/cancel, service layer trace through OrderCancellationService, outbound call to payment-service resolved, and OrderCancelledEvent published. Settings: format=markdown, tone=professional.",
+    "assertions": [
+      {"id": "no-code-blocks", "text": "Output contains zero fenced code blocks (no ``` markers anywhere)", "type": "quality"},
+      {"id": "no-inline-code", "text": "Output contains zero inline code (no backtick-wrapped text)", "type": "quality"},
+      {"id": "no-file-paths", "text": "Output does not contain file paths like src/main/java or .java or .ts extensions", "type": "quality"},
+      {"id": "no-syntax-highlighting", "text": "Output contains no language identifiers after code fences (no ```java, ```json, etc.)", "type": "format"}
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "generate-banned-phrases",
+    "prompt": "Generate documentation for a 'user-registration' feature. State file contains: POST /api/users/register entry point, UserRegistrationService.register orchestrates flow, validates email uniqueness, hashes password via PasswordEncoder, persists via UserRepository, publishes UserRegisteredEvent, outbound call to email-service for verification email (resolved). Settings: format=markdown, tone=professional.",
+    "assertions": [
+      {"id": "no-delve", "text": "Output does not contain the phrase 'delve into'", "type": "quality"},
+      {"id": "no-important-to-note", "text": "Output does not contain 'it's important to note' or 'it is important to note'", "type": "quality"},
+      {"id": "no-leverage", "text": "Output does not contain the word 'leverage'", "type": "quality"},
+      {"id": "no-utilize", "text": "Output does not contain the word 'utilize'", "type": "quality"},
+      {"id": "no-in-order-to", "text": "Output does not contain 'in order to'", "type": "quality"},
+      {"id": "no-comprehensive", "text": "Output does not contain the word 'comprehensive'", "type": "quality"},
+      {"id": "no-robust", "text": "Output does not contain the word 'robust'", "type": "quality"},
+      {"id": "no-seamless", "text": "Output does not contain the word 'seamless'", "type": "quality"},
+      {"id": "no-ensure", "text": "Output does not contain the word 'ensure'", "type": "quality"},
+      {"id": "no-facilitate", "text": "Output does not contain the word 'facilitate'", "type": "quality"}
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "generate-no-hedging-resolved",
+    "prompt": "Generate documentation for 'payment-processing' feature. All dependencies fully resolved. State file contains: POST /api/payments/charge entry point, PaymentService.processCharge orchestrates, calls StripeGateway.charge (outbound, resolved -- StripeGateway validates card, creates charge, returns confirmation), persists via PaymentRepository, publishes PaymentCompletedEvent. Settings: format=markdown, tone=professional.",
+    "assertions": [
+      {"id": "no-might", "text": "Resolved dependency sections do not use the word 'might'", "type": "quality"},
+      {"id": "no-possibly", "text": "Resolved dependency sections do not use the word 'possibly'", "type": "quality"},
+      {"id": "no-could-potentially", "text": "Output does not contain 'could potentially' in resolved sections", "type": "quality"},
+      {"id": "no-appears-to", "text": "Output does not contain 'appears to' in resolved sections", "type": "quality"},
+      {"id": "no-seems-to", "text": "Output does not contain 'seems to' in resolved sections", "type": "quality"},
+      {"id": "definitive-language", "text": "Resolved cross-service dependency descriptions use definitive language (does, sends, returns, validates)", "type": "quality"}
+    ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "generate-actual-names",
+    "prompt": "Generate documentation for 'inventory-management' feature. State file contains: GET /api/inventory/{sku} handled by InventoryController.getStock, PUT /api/inventory/{sku}/adjust handled by InventoryController.adjustStock. Service layer: InventoryService.checkAvailability, InventoryService.adjustStock, WarehouseAllocationService.reallocate. Entities: InventoryItem, WarehouseAllocation. Event: StockAdjustedEvent. Settings: format=markdown, tone=professional.",
+    "assertions": [
+      {"id": "uses-inventory-controller", "text": "Output references InventoryController by name", "type": "quality"},
+      {"id": "uses-inventory-service", "text": "Output references InventoryService by name", "type": "quality"},
+      {"id": "uses-warehouse-allocation-service", "text": "Output references WarehouseAllocationService by name", "type": "quality"},
+      {"id": "uses-stock-adjusted-event", "text": "Output references StockAdjustedEvent by name", "type": "quality"},
+      {"id": "uses-actual-paths", "text": "Output references /api/inventory/{sku} and /api/inventory/{sku}/adjust by their actual paths", "type": "quality"},
+      {"id": "no-generic-names", "text": "Output does not use generic references like 'the inventory service' or 'the controller' without the actual class name on first mention", "type": "quality"}
+    ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "generate-error-flows",
+    "prompt": "Generate documentation for 'order-cancellation' feature. State file contains: POST /api/orders/{id}/cancel, OrderCancellationService.cancel validates order exists, validates order is cancellable (status must be pending or confirmed), validates cancellation window not expired, calls payment-service for refund (resolved), saves cancelled status, publishes OrderCancelledEvent. Settings: format=markdown, tone=professional.",
+    "assertions": [
+      {"id": "covers-not-found", "text": "Output describes what happens when the order does not exist", "type": "quality"},
+      {"id": "covers-not-cancellable", "text": "Output describes what happens when the order status is not cancellable (e.g., already shipped)", "type": "quality"},
+      {"id": "covers-window-expired", "text": "Output describes what happens when the cancellation window has expired", "type": "quality"},
+      {"id": "covers-refund-failure", "text": "Output describes what happens when the payment service refund call fails", "type": "quality"},
+      {"id": "error-section-exists", "text": "Output contains an Error Handling or Edge Cases section", "type": "format"},
+      {"id": "errors-not-footnoted", "text": "Error flows are not relegated to a brief footnote but given substantive coverage", "type": "quality"}
+    ]
+  },
+  {
+    "eval_id": 6,
+    "eval_name": "generate-why-before-what",
+    "prompt": "Generate documentation for 'user-registration' feature. State file contains full trace: POST /api/users/register, UserRegistrationService handles email validation, password hashing, persistence, welcome email via email-service (resolved). Settings: format=markdown, tone=professional.",
+    "assertions": [
+      {"id": "overview-has-business-context", "text": "The Overview or first section explains the business purpose of user registration before describing mechanics", "type": "quality"},
+      {"id": "business-context-section", "text": "A Business Context section exists and precedes the Feature Flow section", "type": "format"},
+      {"id": "motivation-before-mechanics", "text": "Each major section opens with why/context before describing how/what", "type": "quality"}
+    ]
+  },
+  {
+    "eval_id": 7,
+    "eval_name": "generate-markdown-format",
+    "prompt": "Generate documentation for 'order-cancellation' feature with full trace and resolved deps. Settings: format=markdown, tone=professional.",
+    "assertions": [
+      {"id": "has-h1-feature-name", "text": "Document starts with a single H1 heading containing the feature name", "type": "format"},
+      {"id": "has-overview", "text": "Document contains an H2 Overview section", "type": "format"},
+      {"id": "has-business-context", "text": "Document contains an H2 Business Context section", "type": "format"},
+      {"id": "has-feature-flow", "text": "Document contains an H2 Feature Flow section", "type": "format"},
+      {"id": "has-data-flow", "text": "Document contains an H2 Data Flow section", "type": "format"},
+      {"id": "has-cross-service", "text": "Document contains an H2 Cross-Service Dependencies section", "type": "format"},
+      {"id": "has-error-handling", "text": "Document contains an H2 Error Handling section", "type": "format"},
+      {"id": "has-related-features", "text": "Document contains an H2 Related Features section", "type": "format"},
+      {"id": "no-notion-toggles", "text": "Output does not contain <details> or <summary> tags", "type": "format"},
+      {"id": "no-confluence-macros", "text": "Output does not contain {toc}, {info}, {warning}, {expand}, or {status} macros", "type": "format"}
+    ]
+  },
+  {
+    "eval_id": 8,
+    "eval_name": "generate-notion-format",
+    "prompt": "Generate documentation for 'order-cancellation' feature with full trace and resolved deps. Settings: format=notion, tone=conversational.",
+    "assertions": [
+      {"id": "uses-toggle-blocks", "text": "Output uses <details><summary> toggle blocks for entry points or dependencies", "type": "format"},
+      {"id": "uses-callouts", "text": "Output uses blockquote callouts (> [!NOTE] or > [!WARNING] or > [!TIP])", "type": "format"},
+      {"id": "toggle-summaries-concise", "text": "Toggle block summary lines are single-line with a brief description", "type": "format"},
+      {"id": "second-person", "text": "Output uses second person ('you', 'your') consistent with conversational tone", "type": "quality"},
+      {"id": "no-confluence-macros", "text": "Output does not contain {toc}, {info}, {warning}, {expand}, or {status} macros", "type": "format"}
+    ]
+  },
+  {
+    "eval_id": 9,
+    "eval_name": "generate-confluence-format",
+    "prompt": "Generate documentation for 'order-cancellation' feature with full trace and resolved deps. Settings: format=confluence, tone=terse.",
+    "assertions": [
+      {"id": "has-toc-macro", "text": "Output contains a {toc} macro near the top", "type": "format"},
+      {"id": "uses-expand-macros", "text": "Output uses {expand:title=...}...{expand} blocks for collapsible sections", "type": "format"},
+      {"id": "uses-info-or-warning", "text": "Output uses {info} or {warning} macros for callouts", "type": "format"},
+      {"id": "uses-status-macros", "text": "Output uses {status:colour=...} macros for dependency resolution state", "type": "format"},
+      {"id": "terse-tone", "text": "Output uses bullet points and fragments rather than full prose paragraphs, consistent with terse tone", "type": "quality"},
+      {"id": "no-notion-toggles", "text": "Output does not contain <details> or <summary> tags", "type": "format"}
+    ]
+  },
+  {
+    "eval_id": 10,
+    "eval_name": "generate-tone-professional",
+    "prompt": "Generate documentation for 'payment-processing' feature with full trace. Settings: format=markdown, tone=professional.",
+    "assertions": [
+      {"id": "third-person", "text": "Output uses third person ('the system', 'the service') not second person ('you')", "type": "quality"},
+      {"id": "full-sentences", "text": "Output uses complete sentences, not fragments or bullet-only sections in prose areas", "type": "quality"},
+      {"id": "section-introductions", "text": "Major sections have introductory context before diving into details", "type": "quality"},
+      {"id": "no-contractions", "text": "Output avoids contractions (uses 'does not' instead of 'doesn't', etc.) or uses them sparingly", "type": "quality"}
+    ]
+  },
+  {
+    "eval_id": 11,
+    "eval_name": "generate-tone-terse",
+    "prompt": "Generate documentation for 'payment-processing' feature with full trace. Settings: format=markdown, tone=terse.",
+    "assertions": [
+      {"id": "uses-bullets", "text": "Output relies heavily on bullet points rather than prose paragraphs", "type": "format"},
+      {"id": "no-section-intros", "text": "Sections do not have introductory paragraphs -- they go straight to content", "type": "quality"},
+      {"id": "fragments-acceptable", "text": "Output contains sentence fragments or shorthand rather than requiring full sentences everywhere", "type": "quality"},
+      {"id": "no-filler", "text": "Output does not contain transitional phrases like 'Moving on to', 'Next, let us look at', 'As we can see'", "type": "quality"}
+    ]
+  },
+  {
+    "eval_id": 12,
+    "eval_name": "generate-no-emojis",
+    "prompt": "Generate documentation for 'notification-dispatch' feature. Full trace with 4 entry points, 2 resolved deps, 1 unresolved. Settings: format=notion, tone=conversational.",
+    "assertions": [
+      {"id": "no-emojis-headings", "text": "No emojis appear in any headings", "type": "format"},
+      {"id": "no-emojis-body", "text": "No emojis appear in body text", "type": "format"},
+      {"id": "no-emojis-callouts", "text": "No emojis appear in callout blocks", "type": "format"},
+      {"id": "no-emojis-lists", "text": "No emojis appear in list items", "type": "format"}
+    ]
+  },
+  {
+    "eval_id": 13,
+    "eval_name": "generate-unresolved-deps-hedging-ok",
+    "prompt": "Generate documentation for 'order-fulfillment' feature. State: phase=resolving, 2 resolved deps (inventory-service, shipping-service), 1 unresolved dep (analytics-service POST /api/events -- not in registry). Settings: format=markdown, tone=professional.",
+    "assertions": [
+      {"id": "resolved-definitive", "text": "Resolved dependencies (inventory-service, shipping-service) are described with definitive language", "type": "quality"},
+      {"id": "unresolved-hedged", "text": "The unresolved dependency (analytics-service) section uses hedging language ('may', 'likely', 'appears to') since behavior is unconfirmed", "type": "quality"},
+      {"id": "unresolved-flagged", "text": "The unresolved dependency is clearly marked as unresolved or unverified", "type": "quality"},
+      {"id": "warns-incomplete", "text": "Output includes a note that some dependencies could not be fully traced", "type": "quality"}
+    ]
+  },
+  {
+    "eval_id": 14,
+    "eval_name": "generate-cross-service-explicit",
+    "prompt": "Generate documentation for 'checkout' feature. Trace shows: CheckoutService in order-service calls payment-service POST /api/charges (resolved) and inventory-service PUT /api/inventory/{sku}/reserve (resolved). Payment-service in turn calls fraud-service POST /api/fraud/check (resolved at depth 2). Settings: format=markdown, tone=professional.",
+    "assertions": [
+      {"id": "names-source-and-target", "text": "Every cross-service call explicitly names both the calling service and the target service", "type": "quality"},
+      {"id": "execution-order", "text": "Dependencies are described in execution order (payment before inventory if that's the trace order), not alphabetical", "type": "quality"},
+      {"id": "transitive-dep-shown", "text": "The transitive dependency (fraud-service called by payment-service) is documented, not just direct deps", "type": "quality"},
+      {"id": "depth-visible", "text": "The documentation makes clear that fraud-service is a second-level dependency (called by payment-service, not directly by checkout)", "type": "quality"}
+    ]
+  }
+]

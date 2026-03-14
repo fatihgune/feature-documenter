@@ -1,0 +1,72 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "run-dashboard-mode",
+    "prompt": "Run feature-documenter with no arguments. Index has 3 features: order-cancellation (phase=resolved), user-registration (phase=traced), payment-processing (phase=discovered).",
+    "assertions": [
+      {"id": "shows-all-features", "text": "Output lists all 3 features with their current phases", "type": "format"},
+      {"id": "correct-next-actions", "text": "Next action for order-cancellation is generate, user-registration is resolve, payment-processing is trace", "type": "quality"},
+      {"id": "advises-fresh-for-generate", "text": "When order-cancellation's next action is generate, output recommends a fresh session", "type": "quality"},
+      {"id": "asks-which-feature", "text": "Output asks the user which feature to work on", "type": "quality"}
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "run-search-finds-match",
+    "prompt": "Run feature-documenter with --search 'order'. Index has: order-cancellation (resolved), order-fulfillment (traced), user-registration (discovered).",
+    "assertions": [
+      {"id": "finds-both-order-features", "text": "Search matches both order-cancellation and order-fulfillment", "type": "quality"},
+      {"id": "excludes-user", "text": "user-registration is not included in results", "type": "quality"},
+      {"id": "shows-phases", "text": "Each matched feature shows its current phase", "type": "format"},
+      {"id": "shows-next-action", "text": "Each matched feature shows what command to run next", "type": "quality"}
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "run-search-no-match",
+    "prompt": "Run feature-documenter with --search 'billing'. Index has: order-cancellation, user-registration. No billing features exist.",
+    "assertions": [
+      {"id": "reports-no-match", "text": "Output states no existing features match 'billing'", "type": "quality"},
+      {"id": "suggests-discover", "text": "Output suggests running /feature-documenter:discover --search billing", "type": "quality"}
+    ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "run-fresh-flag",
+    "prompt": "Run feature-documenter with --fresh flag. .feature-docs/ directory exists with state files.",
+    "assertions": [
+      {"id": "asks-confirmation", "text": "Skill asks for confirmation before deleting .feature-docs/", "type": "quality"},
+      {"id": "does-not-auto-delete", "text": "Skill does not delete .feature-docs/ without user confirmation", "type": "quality"},
+      {"id": "directs-to-init", "text": "After deletion, skill tells user to run /feature-documenter:init", "type": "quality"}
+    ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "run-no-config",
+    "prompt": "Run feature-documenter with no arguments. .feature-docs/_settings.md does not exist.",
+    "assertions": [
+      {"id": "detects-no-config", "text": "Skill detects that _settings.md is missing", "type": "quality"},
+      {"id": "directs-to-init", "text": "Skill tells user to run /feature-documenter:init", "type": "quality"},
+      {"id": "does-not-proceed", "text": "Skill does not attempt to show a dashboard or scan repos", "type": "quality"}
+    ]
+  },
+  {
+    "eval_id": 6,
+    "eval_name": "run-auto-skips-confirmations",
+    "prompt": "Run feature-documenter with --auto and feature name 'user-registration'. Feature is at phase=discovered.",
+    "assertions": [
+      {"id": "auto-invokes-trace", "text": "Skill automatically invokes the trace skill for user-registration without asking", "type": "quality"},
+      {"id": "no-confirmation-prompt", "text": "Skill does not ask 'would you like to trace this feature?' -- it just does it", "type": "quality"}
+    ]
+  },
+  {
+    "eval_id": 7,
+    "eval_name": "run-auto-pauses-before-generate",
+    "prompt": "Run feature-documenter with --auto and feature name 'order-cancellation'. Feature is at phase=resolved.",
+    "assertions": [
+      {"id": "does-not-auto-generate", "text": "Skill does NOT automatically invoke generate even though --auto is set", "type": "quality"},
+      {"id": "explains-pause", "text": "Skill explains that auto mode pauses before generation", "type": "quality"},
+      {"id": "recommends-fresh-session", "text": "Skill recommends starting a fresh session for generate", "type": "quality"}
+    ]
+  }
+]

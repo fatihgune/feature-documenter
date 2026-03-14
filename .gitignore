@@ -1,0 +1,16 @@
+# Runtime output (generated where the plugin is invoked)
+.feature-docs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Node (if any tooling is added later)
+node_modules/

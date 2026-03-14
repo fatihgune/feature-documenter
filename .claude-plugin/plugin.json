@@ -1,0 +1,25 @@
+{
+  "name": "feature-documenter",
+  "description": "Discovers and documents features across microservice repositories. Traces execution paths, resolves cross-service dependencies, and generates Confluence/Notion/Markdown documentation that teaches engineers business logic without exposing code. Supports Spring Boot, Express, NestJS, Django, FastAPI, Go, Rails, and ASP.NET Core.",
+  "keywords": [
+    "claude-code-plugin",
+    "documentation-generator",
+    "microservices",
+    "cross-service-tracing",
+    "feature-documentation",
+    "confluence",
+    "notion",
+    "developer-tools",
+    "onboarding",
+    "code-analysis"
+  ],
+  "version": "0.1.0",
+  "author": {
+    "name": "fatihgune"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fatihgune/feature-documenter"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,57 @@
+[
+  {
+    "eval_id": 1,
+    "eval_name": "trace-identifies-outbound-calls",
+    "prompt": "Trace the 'order-cancellation' feature. The handler OrderController.cancelOrder calls OrderCancellationService.cancel, which calls PaymentService.initiateRefund (uses RestTemplate to POST to payment-service /api/refunds) and EventPublisher.publish(OrderCancelledEvent).",
+    "assertions": [
+      {"id": "finds-http-outbound", "text": "Outbound Calls table includes the POST /api/refunds call to payment-service", "type": "quality"},
+      {"id": "marks-unresolved", "text": "The outbound call status is set to 'unresolved' (not resolved -- that happens in the resolve phase)", "type": "quality"},
+      {"id": "finds-event-publish", "text": "Background Jobs and Events section includes OrderCancelledEvent as an event-published entry", "type": "quality"},
+      {"id": "identifies-target-service", "text": "The target service name is inferred from the outbound call (payment-service)", "type": "quality"}
+    ]
+  },
+  {
+    "eval_id": 2,
+    "eval_name": "trace-complete-call-chain",
+    "prompt": "Trace the 'user-registration' feature. Entry point: POST /api/users/register -> UserController.register -> UserRegistrationService.register -> EmailValidator.validate -> PasswordEncoder.hash -> UserRepository.save -> EventPublisher.publish(UserRegisteredEvent).",
+    "assertions": [
+      {"id": "full-chain", "text": "Service Layer Trace lists all steps from UserController through EventPublisher in order", "type": "quality"},
+      {"id": "plain-language", "text": "Each step includes a plain-language description of what it does, not just the method name", "type": "quality"},
+      {"id": "no-code", "text": "The trace contains no actual code -- only class.method names and descriptions", "type": "quality"},
+      {"id": "data-layer-captured", "text": "Repository/Data Layer section includes UserRepository with its operations and the User entity", "type": "quality"}
+    ]
+  },
+  {
+    "eval_id": 3,
+    "eval_name": "trace-updates-frontmatter",
+    "prompt": "Trace a feature that has 3 entry points and 2 outbound calls discovered.",
+    "assertions": [
+      {"id": "phase-traced", "text": "Frontmatter phase is updated to 'traced'", "type": "format"},
+      {"id": "status-complete", "text": "Frontmatter status is 'complete'", "type": "format"},
+      {"id": "entry-count-correct", "text": "entry_points_count in frontmatter matches the actual number of entry points traced", "type": "format"},
+      {"id": "trace-log-appended", "text": "Trace Log has one entry per traced entry point with timestamps", "type": "format"}
+    ]
+  },
+  {
+    "eval_id": 4,
+    "eval_name": "trace-background-jobs",
+    "prompt": "Trace the 'report-generation' feature in a Spring Boot repo. Entry point: POST /api/reports/generate -> ReportController.generate -> ReportService.queueGeneration -> publishes ReportRequestedEvent. Also has @Scheduled method ReportCleanupJob.cleanExpiredReports (runs daily) and @KafkaListener ReportCompletedHandler.handle consuming ReportCompletedEvent.",
+    "assertions": [
+      {"id": "finds-scheduled-job", "text": "Background Jobs section includes the scheduled ReportCleanupJob", "type": "quality"},
+      {"id": "finds-event-consumer", "text": "Background Jobs section includes ReportCompletedHandler as an event consumer", "type": "quality"},
+      {"id": "finds-event-publisher", "text": "Background Jobs section includes ReportRequestedEvent as a published event", "type": "quality"},
+      {"id": "distinguishes-types", "text": "Each background job/event has the correct type (scheduled-job, event-consumed, event-published)", "type": "quality"}
+    ]
+  },
+  {
+    "eval_id": 5,
+    "eval_name": "trace-multiple-entry-points",
+    "prompt": "Trace the 'order-management' feature with 4 entry points: GET /api/orders (list), POST /api/orders (create), GET /api/orders/{id} (detail), POST /api/orders/{id}/cancel (cancel). Each has different service layer depth and different outbound calls.",
+    "assertions": [
+      {"id": "traces-all-entry-points", "text": "Service Layer Trace has an H3 subsection for each of the 4 entry points", "type": "format"},
+      {"id": "entry-points-labeled", "text": "Each H3 subsection is labeled with the HTTP method and path", "type": "format"},
+      {"id": "different-depths", "text": "Different entry points have different trace depths reflecting their actual complexity", "type": "quality"},
+      {"id": "aggregates-outbound", "text": "Outbound Calls table aggregates all outbound calls from all entry points without duplicates", "type": "quality"}
+    ]
+  }
+]
