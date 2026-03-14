@@ -5,8 +5,7 @@
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT"></a>
   <a href="https://docs.anthropic.com/en/docs/claude-code"><img src="https://img.shields.io/badge/Claude_Code-Plugin-blueviolet" alt="Claude Code Plugin"></a>
-  <a href="https://github.com/fatihgune/feature-documenter/releases"><img src="https://img.shields.io/github/v/release/fatihgune/feature-documenter?label=Release&color=brightgreen" alt="GitHub Release"></a>
-  <a href="https://github.com/fatihgune/feature-documenter/stargazers"><img src="https://img.shields.io/github/stars/fatihgune/feature-documenter?style=flat&label=Stars&color=yellow" alt="GitHub Stars"></a>
+<a href="https://github.com/fatihgune/feature-documenter/stargazers"><img src="https://img.shields.io/github/stars/fatihgune/feature-documenter?style=flat&label=Stars&color=yellow" alt="GitHub Stars"></a>
   <a href="https://github.com/fatihgune/feature-documenter/issues"><img src="https://img.shields.io/github/issues/fatihgune/feature-documenter?label=Issues" alt="GitHub Issues"></a>
   <a href="https://github.com/fatihgune/feature-documenter/commits/main"><img src="https://img.shields.io/github/last-commit/fatihgune/feature-documenter?label=Last%20Commit" alt="Last Commit"></a>
   <img src="https://img.shields.io/badge/Tech_Stacks-8-orange" alt="8 Tech Stacks">
